@@ -13,14 +13,9 @@ initWos(sparkContext, String IP_of_WOS_Cluster);
 
 JavaRDD<String> lines = sparkContext.textFile(("wos://...") );
 
-JavaRDD<String> words =
+JavaRDD<String> words =lines.flatMap(line -> Arrays.asList(line.split(" ")));
 
-lines.flatMap(line -> Arrays.asList(line.split(" ")));
-
-JavaPairRDD<String, Integer> counts =
-
-words.mapToPair(w -> new Tuple2<String, Integer>(w, 1))
-
+JavaPairRDD<String, Integer> counts =words.mapToPair(w -> new Tuple2<String, Integer>(w, 1))
 .reduceByKey((x, y) -> x + y);
 
 
@@ -35,3 +30,4 @@ String filteredWosFiles= paths.stream()
 
 .collect(Collectors.joining(","));
 
+# Please check the PDF file for more and colorful introduction.
